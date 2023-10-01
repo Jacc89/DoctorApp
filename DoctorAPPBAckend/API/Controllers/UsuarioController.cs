@@ -1,4 +1,5 @@
 ﻿using Data;
+using Data.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace API.Controllers
     public class UsuarioController : BaseApiController
     {
         private readonly ApplicationDbContext _db;
+        private readonly ITokenServicio _tokenServicio;
 
-        public UsuarioController(ApplicationDbContext db)
+        public UsuarioController(ApplicationDbContext db, ITokenServicio tokenServicio)
         {
             _db = db;
+            _tokenServicio = tokenServicio;
         }
         [HttpGet] //api/usuario
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
@@ -33,26 +36,31 @@ namespace API.Controllers
         }
 
         [HttpPost("registro")] //POST:api/usuario/registro
-        
-        public async Task<ActionResult<Usuario>> Registro(RegistroDto registroDto)
+
+        public async Task<ActionResult<UsuarioDto>> Registro(RegistroDto registroDto)
         {
             if (await UsuarioExite(registroDto.Username)) return BadRequest("UserName ya esta registrado");
 
             using var hmac = new HMACSHA512();
-            var uuario = new Usuario
+            var usuario = new Usuario
             {
                 UserName = registroDto.Username.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registroDto.Password)),
                 PasswordSalt = hmac.Key
             };
-            _db.Usuarios.Add(uuario);
+            _db.Usuarios.Add(usuario);
             await _db.SaveChangesAsync();
-            return Ok(uuario);
+            return new UsuarioDto
+            {
+                UserName = usuario.UserName,
+                Token = _tokenServicio.CrearToken(usuario)
+            
+            };
         }
 
         [HttpPost("login")] //POST: api/usuario/login
 
-        public async Task<ActionResult<Usuario>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UsuarioDto>> Login(LoginDto loginDto)
         {
             var usuario = await _db.Usuarios.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
             if (usuario == null) return Unauthorized("Usuario No Valido");
@@ -60,10 +68,13 @@ namespace API.Controllers
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
             for (var i = 0; i < computedHash.Length; i++)
             {
-                if (computedHash[i] != usuario.PasswordHash[i]) return Unauthorized("Password  NoValido");
+                if (computedHash[i] != usuario.PasswordHash[i]) return Unauthorized("Password  No Valido");
             }
-            return Ok(usuario);
-
+            return new UsuarioDto
+            {
+                UserName = usuario.UserName,
+                Token = _tokenServicio.CrearToken(usuario)
+            };
         }
 
         private async Task<bool> UsuarioExite(string username)

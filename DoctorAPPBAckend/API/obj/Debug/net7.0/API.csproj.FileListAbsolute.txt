@@ -78,3 +78,4 @@ D:\Proyectos Programacion\Angular .Net udemy\Doctor APP\DoctorAPPBAckend\API\bin
 D:\Proyectos Programacion\Angular .Net udemy\Doctor APP\DoctorAPPBAckend\API\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
 D:\Proyectos Programacion\Angular .Net udemy\Doctor APP\DoctorAPPBAckend\API\bin\Debug\net7.0\Mono.TextTemplating.dll
 D:\Proyectos Programacion\Angular .Net udemy\Doctor APP\DoctorAPPBAckend\API\bin\Debug\net7.0\System.CodeDom.dll
+D:\Proyectos Programacion\Angular .Net udemy\Doctor APP\DoctorAPPBAckend\API\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
