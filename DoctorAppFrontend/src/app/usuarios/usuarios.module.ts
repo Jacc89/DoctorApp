@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { CompartidosModule } from '../compartidos/compartidos.module';
 import { UsuarioService } from './Services/usuario.service';
 import { LoginComponent } from './login/login.component';
+import { MaterialModule } from '../material/material.module';
 
 
 
@@ -12,7 +13,8 @@ import { LoginComponent } from './login/login.component';
   ],
   imports: [
     CommonModule,
-    CompartidosModule
+    CompartidosModule,
+    MaterialModule
   ],
   exports:[
     LoginComponent
