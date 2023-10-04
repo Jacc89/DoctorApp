@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
 
 
 @NgModule({
@@ -17,6 +18,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule, 
     BrowserAnimationsModule,
     // modulos de api
+    MaterialModule,
+
     
   ],
   providers: [],
