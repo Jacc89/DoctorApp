@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { UsuariosModule } from './Usuarios/usuarios.module';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { MaterialModule } from './material/material.module';
     BrowserAnimationsModule,
     // modulos de api
     MaterialModule,
+    UsuariosModule
 
     
   ],

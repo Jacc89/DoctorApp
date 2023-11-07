@@ -42,8 +42,8 @@ export class LoginComponent {
         this.mostrarLoading = false;
       },
       error: (error) => {
-        this.compartidoServicio.mostrarAlerta(error.error, 'Error');
-        this.mostrarLoading = false;
+        this.compartidoServicio.mostrarAlerta(error.error, 'Error!');
+        this.mostrarLoading = false;     
       }
     })
 
