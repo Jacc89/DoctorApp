@@ -3,6 +3,8 @@ using Data.Servicios;
 using Data;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using API.Errores;
 
 namespace API.Extensiones
 {
@@ -47,6 +49,22 @@ namespace API.Extensiones
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(ConnectionStrings));
             services.AddCors();
             services.AddScoped<ITokenServicio, TokenServicio>();
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = ActionContext =>
+                {
+                    var errores = ActionContext.ModelState
+                                   .Where(e => e.Value.Errors.Count > 0)
+                                   .SelectMany(x => x.Value.Errors)
+                                   .Select(x => x.ErrorMessage).ToArray();
+                    var errorResponse = new ApiValidacionErrorResponse
+                    {
+                        Errors = errores
+                    };
+                    return new BadRequestObjectResult(errorResponse);
+                };
+
+            });
 
             return services;
 

@@ -22,7 +22,7 @@ export class LoginComponent {
               private compartidoServicio: CompartidoService){
     
     this.formLogin = this.fb.group({
-      username: ['', Validators.required],
+      userName: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
@@ -30,7 +30,7 @@ export class LoginComponent {
   iniciarSesion(){
     this.mostrarLoading = true;
     const request: Login = { 
-      username: this.formLogin.value.username,
+      userName: this.formLogin.value.userName,
       password: this.formLogin.value.passoword
     };
     this.usuarioServicio.iniciarSesion(request).subscribe({
@@ -47,8 +47,5 @@ export class LoginComponent {
       }
     })
 
-  }
-
-
-  
+  }  
 }
